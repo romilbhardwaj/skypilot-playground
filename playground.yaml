@@ -1,0 +1,22 @@
+resources:
+  cloud: gcp
+
+workdir: .
+
+file_mounts:
+  ~/credentials: ~/credentials_skypilot
+
+setup: |
+  # Install ttyd
+  wget https://github.com/tsl0922/ttyd/releases/download/1.7.2/ttyd.x86_64
+  sudo mv ttyd.x86_64 /usr/local/bin/ttyd
+  sudo chmod +x /usr/local/bin/ttyd
+
+  # Build docker image
+  docker build -t skypilot-playground .
+
+run: |
+  # Run docker image
+  # Make sure port 7681 is open on the cloud instance!
+  ttyd docker run -v ~/credentials:/credentials:ro --rm -it skypilot-playground /bin/bash -c 'cp -R /credentials/.config ~ && /bin/bash'
+

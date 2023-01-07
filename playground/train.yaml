@@ -1,0 +1,27 @@
+# Example SkyPilot YAML to train mnist
+
+# Define any resources required for the task
+#resources:
+#  # Optional; if left out, automatically pick the cheapest cloud.
+#  cloud: aws
+#  # 1x NVIDIA V100 GPU, uses CPU only instance if no accelerator is specified.
+#  accelerators: V100:1
+
+# Working directory (optional) containing the project codebase.
+# Its contents are synced to ~/sky_workdir/ on the cluster.
+workdir: .
+
+# Setup defines any pre-run commands to be executed.
+# Typical use: pip install -r requirements.txt
+# Invoked under the workdir (i.e., can use its files).
+setup: |
+  echo "Running setup!"
+  pip install -r mnist/requirements.txt
+
+# Run defines commands to be run on the cluster.
+# Typical use: make use of resources, such as running training.
+# Invoked under the workdir (i.e., can use its files).
+run: |
+  echo "Hello, SkyPilot!"
+  cd mnist
+  python main.py --epochs 1

@@ -5,7 +5,7 @@ WORKDIR /skypilot
 # Install SkyPilot + dependencies
 RUN conda install -c conda-forge google-cloud-sdk && \
     apt update -y && \
-    apt install rsync nano -y && \
+    apt install rsync nano vim -y && \
     pip install skypilot[aws,gcp] && \
     rm -rf /var/lib/apt/lists/*
 
@@ -14,6 +14,8 @@ RUN mkdir -p /root/.sky && touch /root/.sky/privacy_policy
 
 # Add files which may change frequently
 COPY ./playground /skypilot/
+
+COPY instructions.txt /skypilot/instructions.txt
 
 # Set bash as default shell
 ENV SHELL /bin/bash
@@ -44,13 +46,13 @@ To start, we have defined a SkyPilot task for you in train.yaml.\n\
 +---------------------------------+----------------------------------------------------------+\n\
 | sky launch -c myclus train.yaml | Create a cluster named myclus to run the train.yaml task |\n\
 +---------------------------------+----------------------------------------------------------+\n\
-|        sky logs myclus 1        |            Check the logs of the running task            |\n\
+|         sky logs myclus         |            Check the logs of the running task            |\n\
 +---------------------------------+----------------------------------------------------------+\n\
 |            sky status           |                   See running clusters                   |\n\
 +---------------------------------+----------------------------------------------------------+\n\
-|         sky down myclus         |                  Stop a running cluster                  |\n\
+|         sky down myclus         |                Terminate a running cluster               |\n\
 +---------------------------------+----------------------------------------------------------+\n\
-|    sky spot launch train.yaml   |          Run the training task on spot instances         |\n\
+|    sky spot launch train.yaml   |    Run the training task with Managed Spot instances     |\n\
 +---------------------------------+----------------------------------------------------------+\n\
 |          sky show-gpus          |            List the GPUs available to SkyPilot           |\n\
 +---------------------------------+----------------------------------------------------------+\n\
@@ -71,5 +73,7 @@ Note that only one cloud is available for this playground, so the optimizer may 
 ENV TINI_VERSION v0.7.0
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
 RUN chmod +x /tini
+
+ENV SKYPILOT_MINIMIZE_LOGGING 1
 
 ENTRYPOINT ["/tini", "--"]

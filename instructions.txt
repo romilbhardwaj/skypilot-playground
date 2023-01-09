@@ -1,0 +1,39 @@
+ _____ _         ______ _ _       _   
+/  ___| |        | ___ (_) |     | |  
+\ \`--.| | ___   _| |_/ /_| | ___ | |_ 
+ \`--. \ |/ / | | |  __/| | |/ _ \| __|
+/\__/ /   <| |_| | |   | | | (_) | |_ 
+\____/|_|\_\\__, \_|   |_|_|\___/ \__|
+             __/ |                    
+            |___/    
+
+Welcome to the SkyPilot playground!
+
+This environment has SkyPilot installed and a cloud account ready for use.
+
+To start, we have defined a SkyPilot task for you in train.yaml.
+
+============================== Some SkyPilot Commands to try =================================
++---------------------------------+----------------------------------------------------------+
+|             Command             |                        Description                       |
++=================================+==========================================================+
+|          cat train.yaml         | Show an example SkyPilot YAML to train a simple ML model |
++---------------------------------+----------------------------------------------------------+
+| sky launch -c myclus train.yaml | Create a cluster named myclus to run the train.yaml task |
++---------------------------------+----------------------------------------------------------+
+|         sky logs myclus         |            Check the logs of the running task            |
++---------------------------------+----------------------------------------------------------+
+|            sky status           |                   See running clusters                   |
++---------------------------------+----------------------------------------------------------+
+|         sky down myclus         |                Terminate a running cluster               |
++---------------------------------+----------------------------------------------------------+
+|    sky spot launch train.yaml   |    Run the training task with Managed Spot instances     |
++---------------------------------+----------------------------------------------------------+
+|          sky show-gpus          |            List the GPUs available to SkyPilot           |
++---------------------------------+----------------------------------------------------------+
+|              sky -h             |                    Show SkyPilot help                    |
++---------------------------------+----------------------------------------------------------+
+
+Visit https://skypilot.readthedocs.io/ for more information.
+
+Note that only one cloud is available for this playground, so the optimizer may not list other cloud providers.

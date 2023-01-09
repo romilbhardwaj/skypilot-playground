@@ -5,7 +5,7 @@ resources:
 workdir: .
 
 file_mounts:
-  ~/credentials: ~/credentials_aws
+  ~/credentials: ~/credentials_all
   ~/nginx_config: ./default
 
 setup: |
@@ -33,5 +33,5 @@ setup: |
 run: |
   # Run docker image
   # Make sure port 7681 is open on the cloud instance!
-  ttyd docker run -v ~/credentials:/credentials:ro --rm -it skypilot-playground /bin/bash -c 'cp -R /credentials/.aws ~ && /bin/bash'
+  ttyd docker run -v ~/credentials:/credentials:ro --rm -it skypilot-playground /bin/bash -c 'cp -a /credentials/. ~ && /bin/bash'
 

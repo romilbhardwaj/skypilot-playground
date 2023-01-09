@@ -2,11 +2,6 @@ FROM continuumio/miniconda3:4.12.0
 
 WORKDIR /skypilot
 
-# ADD ./requirements.txt /skypilot-tutorial/requirements.txt
-
-# Install tutorial dependencies
-# RUN pip install -r requirements.txt
-
 # Install SkyPilot + dependencies
 RUN conda install -c conda-forge google-cloud-sdk && \
     apt update -y && \
@@ -37,17 +32,34 @@ RUN echo '[ ! -z "$TERM" -a -r /etc/motd ] && cat /etc/motd' \
 \n\
 Welcome to the SkyPilot playground!\n\
 \n\
-This environment has SkyPilot installed and a GCP account ready for use.\n\
+This environment has SkyPilot installed and a cloud account ready for use.\n\
 \n\
-Feel free to explore SkyPilot, launch clusters and queue jobs.\n\
+To start, we have defined a SkyPilot task for you in train.yaml.\n\
 \n\
-To start, we have defined a SkyPilot task for you. Have a look at train.yaml in this directory 'cat train.yaml'.\n\
+============================== Some SkyPilot Commands to try =================================\n\
++---------------------------------+----------------------------------------------------------+\n\
+|             Command             |                        Description                       |\n\
++=================================+==========================================================+\n\
+|          cat train.yaml         | Show an example SkyPilot YAML to train a simple ML model |\n\
++---------------------------------+----------------------------------------------------------+\n\
+| sky launch -c myclus train.yaml | Create a cluster named myclus to run the train.yaml task |\n\
++---------------------------------+----------------------------------------------------------+\n\
+|        sky logs myclus 1        |            Check the logs of the running task            |\n\
++---------------------------------+----------------------------------------------------------+\n\
+|            sky status           |                   See running clusters                   |\n\
++---------------------------------+----------------------------------------------------------+\n\
+|         sky down myclus         |                  Stop a running cluster                  |\n\
++---------------------------------+----------------------------------------------------------+\n\
+|    sky spot launch train.yaml   |          Run the training task on spot instances         |\n\
++---------------------------------+----------------------------------------------------------+\n\
+|          sky show-gpus          |            List the GPUs available to SkyPilot           |\n\
++---------------------------------+----------------------------------------------------------+\n\
+|              sky -h             |                    Show SkyPilot help                    |\n\
++---------------------------------+----------------------------------------------------------+\n\
 \n\
-Run 'sky launch train.yaml' to run your first skypilot task! \n\
+Visit https://skypilot.readthedocs.io/ for more information.\n\
 \n\
-Run 'sky -h' to see all available commands, or visit https://skypilot.readthedocs.io/.\n\
-\n\
-Note that only GCP is available for this playground, so the optimizer may not list other cloud providers.\n\
+Note that only one cloud is available for this playground, so the optimizer may not list other cloud providers.\n\
 \n"\
     > /etc/motd
 
@@ -61,6 +73,3 @@ ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
 RUN chmod +x /tini
 
 ENTRYPOINT ["/tini", "--"]
-
-# CMD ["/bin/bash", "-c", "cp -a /credentials/. /root/;sky show-gpus;"]
-# docker run -v D:/credentials_skypilot:/credentials:ro --rm -p 8888:8888 -it skypilot-playground "cp -a /credentials/. /root/ && /bin/bash"

@@ -9,7 +9,7 @@
 
 Welcome to the SkyPilot playground!
 
-This environment has SkyPilot installed and a cloud account ready for use.
+This environment has the SkyPilot client installed and a remote SkyPilot API Server ready for use.
 
 To start, we have defined a SkyPilot task for you in train.yaml.
 
@@ -27,13 +27,11 @@ To start, we have defined a SkyPilot task for you in train.yaml.
 +---------------------------------+----------------------------------------------------------+
 |         sky down myclus         |                Terminate a running cluster               |
 +---------------------------------+----------------------------------------------------------+
-|    sky spot launch train.yaml   |    Run the training task with Managed Spot instances     |
+|    sky jobs launch train.yaml   |    Run the training task with Managed Spot instances     |
 +---------------------------------+----------------------------------------------------------+
 |          sky show-gpus          |            List the GPUs available to SkyPilot           |
 +---------------------------------+----------------------------------------------------------+
 |              sky -h             |                    Show SkyPilot help                    |
 +---------------------------------+----------------------------------------------------------+
 
-Visit https://skypilot.readthedocs.io/ for more information.
-
-Note that only one cloud is available for this playground, so the optimizer may not list other cloud providers.
+Visit https://docs.skypilot.co/ for more information.

@@ -1,16 +1,20 @@
 resources:
-  cloud: aws
-  instance_type: m5.4xlarge
+  cloud: gcp
+  ports: 80
+
+# API URL for SkyPilot authentication
+envs:
+  API_URL: 
+  PLAYGROUND_PASSWORD: 
 
 workdir: .
 
 file_mounts:
-  ~/credentials: ~/credentials_aws
   ~/nginx_config: ./default
 
 setup: |
   # Install ttyd
-  wget https://github.com/tsl0922/ttyd/releases/download/1.7.2/ttyd.x86_64
+  wget https://github.com/tsl0922/ttyd/releases/download/1.7.7/ttyd.x86_64
   sudo mv ttyd.x86_64 /usr/local/bin/ttyd
   sudo chmod +x /usr/local/bin/ttyd
   
@@ -19,7 +23,7 @@ setup: |
   sudo apt-get install -y nginx apache2-utils
 
   # Add user and password
-  sudo htpasswd -c -b /etc/nginx/.htpasswd skypilot skyretreat
+  sudo htpasswd -c -b /etc/nginx/.htpasswd skypilot ${PLAYGROUND_PASSWORD}
   
   # Copy nginx config to /etc/nginx/sites-available/default
   sudo cp ~/nginx_config /etc/nginx/sites-available/default
@@ -28,10 +32,9 @@ setup: |
   sudo systemctl restart nginx
   
   # Build docker image
-  docker build -t skypilot-playground .
+  docker build --build-arg API_URL=${API_URL} -t skypilot-playground .
 
 run: |
   # Run docker image
-  # Make sure port 7681 is open on the cloud instance!
-  ttyd docker run -v ~/credentials:/credentials:ro --rm -it skypilot-playground /bin/bash -c 'cp -R /credentials/.aws ~ && /bin/bash'
+  ttyd --writable --max-clients 16 docker run --rm -it skypilot-playground /bin/bash
 

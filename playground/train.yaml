@@ -15,8 +15,8 @@ workdir: .
 # Typical use: pip install -r requirements.txt
 # Invoked under the workdir (i.e., can use its files).
 setup: |
-  echo "Running setup!"
-  pip install install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cpu
+  echo "Running setup"
+  pip install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cpu
 
 # Run defines commands to be run on the cluster.
 # Typical use: make use of resources, such as running training.

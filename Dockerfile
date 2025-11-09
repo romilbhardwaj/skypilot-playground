@@ -1,13 +1,19 @@
-FROM continuumio/miniconda3:4.12.0
+FROM continuumio/miniconda3:23.3.1-0
 
 WORKDIR /skypilot
 
 # Install SkyPilot + dependencies
 RUN conda install -c conda-forge google-cloud-sdk && \
     apt update -y && \
-    apt install rsync nano vim -y && \
-    pip install skypilot[aws,gcp] && \
+    apt-get install --no-install-recommends -y \
+    git gcc rsync sudo patch openssh-server \
+    pciutils nano fuse socat netcat-openbsd curl rsync vim tini && \
+    pip install skypilot-nightly && \
     rm -rf /var/lib/apt/lists/*
+
+# Define API URL as a build argument with a default value
+ARG API_URL=http://localhost:46580
+RUN sky api login -e ${API_URL}
 
 # Exclude usage logging message
 RUN mkdir -p /root/.sky && touch /root/.sky/privacy_policy
@@ -52,16 +58,14 @@ To start, we have defined a SkyPilot task for you in train.yaml.\n\
 +---------------------------------+----------------------------------------------------------+\n\
 |         sky down myclus         |                Terminate a running cluster               |\n\
 +---------------------------------+----------------------------------------------------------+\n\
-|    sky spot launch train.yaml   |    Run the training task with Managed Spot instances     |\n\
+|    sky jobs launch train.yaml   |   Run the training as a Managed Job with auto recovery   |\n\
 +---------------------------------+----------------------------------------------------------+\n\
 |          sky show-gpus          |            List the GPUs available to SkyPilot           |\n\
 +---------------------------------+----------------------------------------------------------+\n\
 |              sky -h             |                    Show SkyPilot help                    |\n\
 +---------------------------------+----------------------------------------------------------+\n\
 \n\
-Visit https://skypilot.readthedocs.io/ for more information.\n\
-\n\
-Note that only one cloud is available for this playground, so the optimizer may not list other cloud providers.\n\
+Visit https://docs.skypilot.co/ for more information.\n\
 \n"\
     > /etc/motd
 
